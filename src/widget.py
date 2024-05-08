@@ -24,7 +24,7 @@ def convert_iso_ddmmyyy(iso_input: str) -> str:
     """Accepts a ISO8601 string and returns string as dd.mm.yyyy"""
     # ISO 8601: 2018-07-11T02:26:18.671407
     iso_list = iso_input.split(sep="T")[0].split(sep="-")
-    year, mouth, date = iso_list
     if len(iso_list) != 3:
-        raise ValueError("Incorrect data format")
+        raise ValueError("Incorrect date format")
+    year, mouth, date = iso_list
     return f"{date}.{mouth}.{year}"
