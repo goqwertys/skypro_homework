@@ -20,9 +20,14 @@ def main() -> None:
         "Visa Platinum 8990922113665229",
         "Visa Gold 5999414228426353",
         "Счет 73654108430135874305",
+        "Счет 736541084301358743"
     ]
     for line in strings_to_match:
-        print(mask_card_or_acc_sring(line))
+        try:
+            masked_data = mask_card_or_acc_sring(line)
+            print(masked_data)
+        except ValueError as e:
+            print(f"An error occurred: {e}")
 
 
 if __name__ == "__main__":
