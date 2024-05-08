@@ -1,5 +1,5 @@
 from src.masks import mask_account, mask_card
-from src.widget import get_masked_card_from_str
+from src.widget import mask_card_or_acc_sring
 
 
 def main() -> None:
@@ -22,7 +22,7 @@ def main() -> None:
         "Счет 73654108430135874305",
     ]
     for line in strings_to_match:
-        print(get_masked_card_from_str(line))
+        print(mask_card_or_acc_sring(line))
 
 
 if __name__ == "__main__":
