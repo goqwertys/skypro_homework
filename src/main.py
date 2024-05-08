@@ -1,5 +1,5 @@
 from src.masks import mask_account, mask_card
-from src.widget import mask_card_or_acc_sring
+from src.widget import mask_card_or_acc_sring, convert_iso_ddmmyyy
 
 
 def main() -> None:
@@ -26,6 +26,24 @@ def main() -> None:
         try:
             masked_data = mask_card_or_acc_sring(line)
             print(masked_data)
+        except ValueError as e:
+            print(f"An error occurred: {e}")
+
+    dates = [
+        "2024-03-16T08:00:00Z",
+        "2024-01-17T08:00:00Z",
+        "2025-12-18T08:00:00Z",
+        "1999-11-21T08:00:00Z",
+        "1998-09-24T08:00:00Z",
+        "2023-01-14T08:00:00Z",
+        "2022-02-24T08:00:00Z",
+        "2022-02T08:00:00Z",
+
+    ]
+    for date in dates:
+        try:
+            converted_date = convert_iso_ddmmyyy(date)
+            print(converted_date)
         except ValueError as e:
             print(f"An error occurred: {e}")
 
