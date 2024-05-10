@@ -2,7 +2,7 @@
 Defining functions for widgets
 """
 
-from masks import mask_card, mask_account
+from src.masks import mask_account, mask_card
 
 
 def mask_card_or_acc_sring(input_string: str) -> str:

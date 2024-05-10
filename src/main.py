@@ -1,5 +1,5 @@
 from src.masks import mask_account, mask_card
-from src.widget import mask_card_or_acc_sring, convert_iso_ddmmyyy
+from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_sring
 
 
 def main() -> None:
@@ -20,7 +20,7 @@ def main() -> None:
         "Visa Platinum 8990922113665229",
         "Visa Gold 5999414228426353",
         "Счет 73654108430135874305",
-        "Счет 736541084301358743"
+        "Счет 736541084301358743",
     ]
     for line in strings_to_match:
         try:
@@ -38,7 +38,6 @@ def main() -> None:
         "2023-01-14T08:00:00Z",
         "2022-02-24T08:00:00Z",
         "2022-02T08:00:00Z",
-
     ]
     for date in dates:
         try:
