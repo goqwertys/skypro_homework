@@ -12,3 +12,15 @@ def sort_by_date(input_list: List[dict], rev=False) -> List[dict]:
     return sorted(
         input_list, key=lambda x: datetime.fromisoformat(x.get("date")), reverse=rev
     )
+
+
+def sort_by_price_in_cat(input_list: List[dict], cat: str | None = None) -> List[dict]:
+    """Returns sorted list of dicts in specified category"""
+    categories = [x.get("category", None) for x in input_list]
+    if cat is None:
+        list_for_sort = input_list
+    elif cat in categories:
+        list_for_sort = [x for x in input_list if x.get("category") == cat]
+    else:
+        raise ValueError("Wrong ")
+    return sorted(list_for_sort, key=lambda x: x.get("price"))
