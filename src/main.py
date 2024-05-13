@@ -1,14 +1,16 @@
 from src.masks import mask_account, mask_card
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_sring
-from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat
+from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat, orders_info
 
 
 def main() -> None:
     # MASK CARD
+    print("Testing mask_card():")
     card_mask = mask_card("7000792289606361")
     print(card_mask)
 
     # MASK ACCOUNT
+    print("Testing mask_account():")
     acc_mask = mask_account("73654108430135874305")
     print(acc_mask)
 
@@ -40,6 +42,7 @@ def main() -> None:
         "2022-02-24T08:00:00Z",
         "2022-02T08:00:00Z",
     ]
+    print("Testing convert_iso_ddmmyyy():")
     for date in dates:
         try:
             converted_date = convert_iso_ddmmyyy(date)
@@ -82,32 +85,38 @@ def main() -> None:
         {"name": "mango", "price": 7.0, "category": "fruit", "quantity": 3},
     ]
     # TEST sort_by_price_in_cat() with no category
+    print("Testing sort_by_price_in_cat() with with no category:")
     sorted_in_category = sort_by_price_in_cat(list_of_dicts)
     for item in sorted_in_category:
         print(item)
     # TEST sort_by_price_in_cat() with specified category
+    print("Testing sort_by_price_in_cat() with specified category:")
     sorted_in_category = sort_by_price_in_cat(list_of_dicts, "fruit")
     for item in sorted_in_category:
         print(item)
 
     # List of dicts for testing:
     list_of_dicts = [
-        {"id": 1507, "date": "2019-07-03T18:35:29.512364", "items": [
+        {"id": 1507, "date": "2020-06-03T18:35:29.512364", "items": [
             {"name": "orange", "price": 3.2, "quantity": 15},
             {"name": "apple", "price": 2.5, "quantity": 35},
             {"name": "apple", "price": 2.5, "quantity": 35}
         ]},
-        {"id": 1523, "date": "2018-06-30T02:08:58.425572", "items": [
+        {"id": 1523, "date": "2020-06-30T02:08:58.425572", "items": [
             {"name": "orange", "price": 3.2, "quantity": 15},
             {"name": "potato", "price": 2.5, "quantity": 50},
             {"name": "mango", "price": 5.5, "quantity": 3}
         ]},
-        {"id": 1243, "date": "2018-09-12T21:27:25.241689", "items": [
+        {"id": 1243, "date": "2023-06-12T21:27:25.241689", "items": [
             {"name": "orange", "price": 3.2, "quantity": 15},
             {"name": "potato", "price": 2.5, "quantity": 50},
             {"name": "mango", "price": 5.5, "quantity": 3}
         ]},
     ]
+    orders_info_data = orders_info(list_of_dicts)
+    print("Testing orders_info():")
+    for key, value in orders_info_data.items():
+        print(f"{key}:\n{value}")
 
 
 if __name__ == "__main__":
