@@ -1,6 +1,6 @@
 from src.masks import mask_account, mask_card
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_sring
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat
 
 
 def main() -> None:
@@ -73,6 +73,21 @@ def main() -> None:
     ]
     sorted_data = sort_by_date(sort_test)
     for item in sorted_data:
+        print(item)
+
+    list_of_dicts = [
+        {"name": "apple", "price": 3.0, "category": "fruit", "quantity": 5},
+        {"name": "orange", "price": 4.0, "category": "fruit", "quantity": 10},
+        {"name": "potato", "price": 1.2, "category": "vegetable", "quantity": 30},
+        {"name": "mango", "price": 7.0, "category": "fruit", "quantity": 3},
+    ]
+    # TEST sort_by_price_in_cat() with no category
+    sorted_in_category = sort_by_price_in_cat(list_of_dicts)
+    for item in sorted_in_category:
+        print(item)
+    # TEST sort_by_price_in_cat() with specified category
+    sorted_in_category = sort_by_price_in_cat(list_of_dicts, "fruit")
+    for item in sorted_in_category:
         print(item)
 
 
