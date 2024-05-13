@@ -90,6 +90,25 @@ def main() -> None:
     for item in sorted_in_category:
         print(item)
 
+    # List of dicts for testing:
+    list_of_dicts = [
+        {"id": 1507, "date": "2019-07-03T18:35:29.512364", "items": [
+            {"name": "orange", "price": 3.2, "quantity": 15},
+            {"name": "apple", "price": 2.5, "quantity": 35},
+            {"name": "apple", "price": 2.5, "quantity": 35}
+        ]},
+        {"id": 1523, "date": "2018-06-30T02:08:58.425572", "items": [
+            {"name": "orange", "price": 3.2, "quantity": 15},
+            {"name": "potato", "price": 2.5, "quantity": 50},
+            {"name": "mango", "price": 5.5, "quantity": 3}
+        ]},
+        {"id": 1243, "date": "2018-09-12T21:27:25.241689", "items": [
+            {"name": "orange", "price": 3.2, "quantity": 15},
+            {"name": "potato", "price": 2.5, "quantity": 50},
+            {"name": "mango", "price": 5.5, "quantity": 3}
+        ]},
+    ]
+
 
 if __name__ == "__main__":
     main()
