@@ -24,3 +24,11 @@ def sort_by_price_in_cat(input_list: List[dict], cat: str | None = None) -> List
     else:
         raise ValueError("Wrong ")
     return sorted(list_for_sort, key=lambda x: x.get("price"))
+
+
+def orders_info(orders: List[list]) -> dict:
+    """Returns dict of average order value and number of orders for each month"""
+    monthly_data = dict()
+    for order in orders:
+        pass
+    return monthly_data
