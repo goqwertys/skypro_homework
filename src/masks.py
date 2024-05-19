@@ -16,4 +16,4 @@ def mask_account(acc_number: str) -> str:
     if acc_number.isdigit() and len(acc_number) == 20:
         return f"{'*' * 2}{acc_number[-4::]}"
     else:
-        raise ValueError("Incorrect card number")
+        raise ValueError("Incorrect account number")
