@@ -11,6 +11,17 @@ def test_mask_card_basic(card_num, expected):
     assert mask_card(card_num) == expected
 
 
+@pytest.mark.parametrize("card_mum", [
+    "1111",
+    "12341234123412340",
+    "12345678",
+    "AAAABBBCCCDDD"
+])
+def test_mask_card_incorrect_card_number(card_mum):
+    with pytest.raises(ValueError, match="Incorrect card number"):
+        mask_card(card_mum)
+
+
 @pytest.mark.parametrize("acc_number, expected", [
     ("73654108430135874305", "**4305"),
     ("12345678901234567890", "**7890"),
@@ -18,3 +29,13 @@ def test_mask_card_basic(card_num, expected):
 ])
 def test_mask_account(acc_number, expected):
     assert mask_account(acc_number) == expected
+
+
+@pytest.mark.parametrize("acc_num",[
+    "736541084301358743050",
+    "AAAA4108430135874305",
+    "",
+])
+def test_mask_account_incorrect_number(acc_num):
+    with pytest.raises(ValueError, match="Incorrect account number"):
+        mask_account(acc_num)
