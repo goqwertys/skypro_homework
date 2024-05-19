@@ -1,5 +1,5 @@
 from src.masks import mask_account, mask_card
-from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_sring
+from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat, orders_info
 
 
@@ -27,7 +27,7 @@ def main() -> None:
     ]
     for line in strings_to_match:
         try:
-            masked_data = mask_card_or_acc_sring(line)
+            masked_data = mask_card_or_acc_string(line)
             print(masked_data)
         except ValueError as e:
             print(f"An error occurred: {e}")
