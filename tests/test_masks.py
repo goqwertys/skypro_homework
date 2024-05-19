@@ -2,6 +2,7 @@ import pytest
 from src.masks import mask_card, mask_account
 
 
+# mask_count() TESTES
 @pytest.mark.parametrize("card_num, expected", [
     ("7000792289606361", "7000 79** **** 6361"),
     ("5000600050004000", "5000 60** **** 4000"),
@@ -22,6 +23,7 @@ def test_mask_card_incorrect_card_number(card_mum):
         mask_card(card_mum)
 
 
+# mask_account() TESTES
 @pytest.mark.parametrize("acc_number, expected", [
     ("73654108430135874305", "**4305"),
     ("12345678901234567890", "**7890"),
@@ -31,7 +33,7 @@ def test_mask_account(acc_number, expected):
     assert mask_account(acc_number) == expected
 
 
-@pytest.mark.parametrize("acc_num",[
+@pytest.mark.parametrize("acc_num", [
     "736541084301358743050",
     "AAAA4108430135874305",
     "",
