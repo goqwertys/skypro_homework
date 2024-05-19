@@ -13,3 +13,13 @@ from src.widget import mask_card_or_acc_string, convert_iso_ddmmyyy
 ])
 def test_mask_card_or_acc_string(string, expected):
     assert mask_card_or_acc_string(string) == expected
+
+
+@pytest.mark.parametrize("string", [
+    "Maestro 159683786870",
+    "5999414228426353",
+    ""
+])
+def test_mask_card_or_acc_string_incorrect_number(string):
+    with pytest.raises(ValueError, match="Incorrect card or acc number"):
+        mask_card_or_acc_string(string)
