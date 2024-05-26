@@ -18,7 +18,7 @@ def test_mask_card_or_acc_string(string, expected):
 @pytest.mark.parametrize("string", [
     "Maestro 159683786870",
     "Visa Gold AAAA414228426353",
-    "Счет 6468647367889477958922"
+    "Счет 353830334744478955"
 ])
 def test_mask_card_or_acc_string_incorrect_number(string):
     with pytest.raises(ValueError, match="Incorrect card or acc number"):
