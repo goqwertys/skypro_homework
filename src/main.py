@@ -82,7 +82,7 @@ def main() -> None:
         {"name": "apple", "price": 3.0, "category": "fruit", "quantity": 5},
         {"name": "orange", "price": 4.0, "category": "fruit", "quantity": 10},
         {"name": "potato", "price": 1.2, "category": "vegetable", "quantity": 30},
-        {"name": "mango", "price": 7.0, "category": "fruit", "quantity": 3},
+        {"name": "mango", "price": 7.0, "category": "fruit", "quantity": 3}
     ]
     # TEST sort_by_price_in_cat() with no category
     print("Testing sort_by_price_in_cat() with with no category:")
