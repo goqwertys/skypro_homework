@@ -10,7 +10,7 @@ def mask_card_or_acc_string(input_string: str) -> str:
     # Check if string is correct
     if (
         not len(input_string.split()[-1]) in [16, 20]
-        and input_string.split()[-1].isdigit()
+        or not input_string.split()[-1].isdigit()
     ):
         raise ValueError("Incorrect card or acc number")
     else:
