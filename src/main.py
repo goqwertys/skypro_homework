@@ -198,10 +198,17 @@ def main() -> None:
     print("Testing orders_info():")
     for key, value in orders_info_data.items():
         print(f"{key}:\n{value}")
+
+    # TRANSACTION_FILTER
     print(f"{"*"*100}\nTRANSACTION_FILTER\n")
     usd_transactions = filter_by_currency(transactions, "USD")
     for _ in range(2):
         print(next(usd_transactions)["id"])
+    # TRANSACTIONS DESCRIPTIONS
+    print(f"{"*" * 100}\nTRANSACTION_DESCRIPTIONS\n")
+    descriptions = transaction_descriptions(transactions)
+    for _ in range(5):
+        print(next(descriptions))
 
 
 if __name__ == "__main__":
