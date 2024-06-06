@@ -1,9 +1,9 @@
 from typing import List, Iterator, Generator
 
 
-def filter_by_currency(input_list: List[dict], currency: str) -> Iterator:
+def filter_by_currency(transactions: List[dict], currency: str) -> Iterator:
     """Returns an iterator that yields, one by one, the transactions that specify the given currency"""
-    return (tr for tr in input_list if tr["operationAmount"]["currency"]["code"] == currency)
+    return (tr for tr in transactions if tr["operationAmount"]["currency"]["code"] == currency)
 
 
 def transaction_descriptions(input_list: List[dict]) -> Iterator:
@@ -13,7 +13,7 @@ def transaction_descriptions(input_list: List[dict]) -> Iterator:
 
 def card_number_generator(start: int, end: int) -> Generator:
     """Generates card numbers in the format XXXX XXXX XXXX XXXX"""
-    if 0 < start < int("9"*16) and 0 < end < int("9"*16) and end > start:
+    if 0 < start < int("9" * 16) and 0 < end < int("9" * 16) and end > start:
         num = start
         while num <= end:
             result = f"{"0" * (16 - len(str(num)))}{num}"
