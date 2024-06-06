@@ -39,3 +39,9 @@ def test_card_number_generator_100to200():
     assert next(cn_generator) == "0000 0000 0000 0100"
     assert next(cn_generator) == "0000 0000 0000 0101"
     assert next(cn_generator) == "0000 0000 0000 0102"
+
+
+def test_card_number_generator_invalid_numbers():
+    with pytest.raises(ValueError, match="Incorrect start/end values"):
+        cn_generator = card_number_generator(-1, 10)
+        _ = next(cn_generator)
