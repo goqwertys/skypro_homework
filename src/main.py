@@ -198,12 +198,12 @@ def main() -> None:
             }
         ]
     )
+    print("filter_by_currency():")
+    usd_transactions = filter_by_currency(transactions, "USD")
 
-    # usd_transactions = filter_by_currency(transactions, "USD")
-    #
-    # for _ in range(2):
-    #     print(next(usd_transactions)["id"])
-
+    for _ in range(2):
+        print(next(usd_transactions)["id"])
+    print("transaction_descriptions():")
     descriptions = transaction_descriptions(transactions)
     for _ in range(5):
         print(next(descriptions))
