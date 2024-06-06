@@ -9,3 +9,8 @@ def filter_by_currency(input_list: List[dict], currency: str) -> Iterator:
 def transaction_descriptions(input_list: List[dict]) -> Iterator:
     """Returns a generator of description of each operation"""
     return (tr["description"] for tr in input_list)
+
+
+def card_number_generator(start: int, end: int) -> str:
+    """Generates card numbers in the format XXXX XXXX XXXX XXXX"""
+    pass
