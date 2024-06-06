@@ -7,4 +7,5 @@ def filter_by_currency(input_list: List[dict], currency: str) -> Iterator:
 
 
 def transaction_descriptions(input_list: List[dict]) -> Iterator:
-    pass
+    """Returns a generator of description of each operation"""
+    return (tr["description"] for tr in input_list)
