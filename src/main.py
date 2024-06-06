@@ -1,6 +1,7 @@
 from src.masks import mask_account, mask_card
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat, orders_info
+from src.generators import filter_by_currency
 
 
 def main() -> None:
@@ -197,6 +198,11 @@ def main() -> None:
             }
         ]
     )
+
+    usd_transactions = filter_by_currency(transactions, "USD")
+
+    for _ in range(2):
+        print(next(usd_transactions)["id"])
 
 
 if __name__ == "__main__":
