@@ -211,6 +211,9 @@ def main() -> None:
     for card_number in card_number_generator(1, 5):
         print(card_number)
 
+    for card_number in card_number_generator(-10, 5):
+        print(card_number)
+
 
 if __name__ == "__main__":
     main()
