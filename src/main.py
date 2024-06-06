@@ -1,7 +1,7 @@
 from src.masks import mask_account, mask_card
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat, orders_info
-from src.generators import filter_by_currency, transaction_descriptions
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
 
 def main() -> None:
@@ -207,6 +207,9 @@ def main() -> None:
     descriptions = transaction_descriptions(transactions)
     for _ in range(5):
         print(next(descriptions))
+
+    for card_number in card_number_generator(1, 5):
+        print(card_number)
 
 
 if __name__ == "__main__":
