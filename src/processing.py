@@ -35,7 +35,7 @@ def orders_info(orders: List[dict]) -> dict:
         year_month = datetime.fromisoformat(order["date"]).strftime('%Y-%m')
         # If the dictionary does not yet have an entry for the current month, create an empty dictionary
         if year_month not in monthly_data:
-            monthly_data[year_month] = {"total_price": 0 ,"order_count": 0 }
+            monthly_data[year_month] = {"total_price": 0, "order_count": 0}
         # Calculate the total cost of the order
         total_order_price = sum(item['price'] * item['quantity'] for item in order['items'])
         # Updating price and count
