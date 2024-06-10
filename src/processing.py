@@ -23,7 +23,7 @@ def sort_by_price_in_cat(input_list: List[dict], cat: str | None = None) -> List
         list_for_sort = [x for x in input_list if x.get("category") == cat]
     else:
         raise ValueError("Invalid category")
-    return sorted(list_for_sort, key=lambda x: x.get("price"))
+    return sorted(list_for_sort, key=lambda x: x.get("price", float('inf')))
 
 
 def orders_info(orders: List[dict]) -> dict:
