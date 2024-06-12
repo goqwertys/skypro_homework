@@ -4,6 +4,11 @@ from typing import Callable
 
 
 def log(*, filename: str | None = None) -> Callable:
+    """
+    Logs a function call to a file or console :param filename: takes one optional argument filename, which specifies
+    the path to the file where the logs will be written. If filename is not specified, the logs will be output to the
+    console
+    """
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
