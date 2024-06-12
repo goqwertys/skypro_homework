@@ -1,16 +1,18 @@
 from datetime import datetime
-from typing import List
+from typing import List, Dict, Any
 
 
-def filter_by_state(input_list: List[dict], state: str = "EXECUTED") -> List[dict]:
+def filter_by_state(input_list: List[Dict[str, Any]], state: str = "EXECUTED") -> List[Dict[str, Any]]:
     """Returns filtered list of dicts if 'state' item contains state"""
-    return [item for item in input_list if state in item.get("state")]
+    return [item for item in input_list if isinstance(item.get("state"), str) and item.get("state") == state]
 
 
-def sort_by_date(input_list: List[dict], rev=False) -> List[dict]:
+def sort_by_date(input_list: List[Dict[str, Any]], rev: bool = False) -> List[Dict[str, Any]]:
     """Returns list of dicts sorted by 'date'"""
     return sorted(
-        input_list, key=lambda x: datetime.fromisoformat(x.get("date")), reverse=rev
+        input_list,
+        key=lambda x: datetime.fromisoformat(x["date"]) if "date" in x and isinstance(x["date"], str) else datetime.min,
+        reverse=rev
     )
 
 
@@ -26,10 +28,10 @@ def sort_by_price_in_cat(input_list: List[dict], cat: str | None = None) -> List
     return sorted(list_for_sort, key=lambda x: x.get("price", float('inf')))
 
 
-def orders_info(orders: List[dict]) -> dict:
+def orders_info(orders: List[Dict]) -> Dict[str, Dict[str, float]]:
     """Returns dict of average order value and number of orders for each month"""
-    monthly_data = dict()
-    result_data = dict()
+    monthly_data: Dict[str, Dict[str, float]] = {}
+    result_data: Dict[str, Dict[str, float]] = {}
     for order in orders:
         # Get year and month of order
         year_month = datetime.fromisoformat(order["date"]).strftime('%Y-%m')
