@@ -15,10 +15,11 @@ def test_log_success_console(capsys):
 
 def test_log_error_console(capsys):
     @log()
-    def foo():
-        return 1 / 0
+    def foo(x):
+        return 1 / x
 
     with pytest.raises(ZeroDivisionError):
-        foo()
+        foo(0)
     captured = capsys.readouterr()
-    assert captured.out == "foo error: ZeroDivisionError. Inputs: (10), {}"
+    expected_output = "foo error: ZeroDivisionError. Inputs: (0,), {}\n"
+    assert captured.out.rstrip() == expected_output.rstrip()
