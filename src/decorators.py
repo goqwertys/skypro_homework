@@ -23,13 +23,12 @@ def log(*, filename: str | None = None) -> Callable:
                     print(log_message)
                 return result
             except Exception as e:
-                log_message = f"{func.__name__} error: {type(e).__name__}. Inputs {args}, {kwargs} "
+                log_message = f"{func.__name__} error: {type(e).__name__}. Inputs: {args}, {kwargs} "
                 if filename:
                     with open(file_path, 'a') as f:
                         f.write(log_message)
                 else:
                     print(log_message)
-
+                raise e
         return wrapper
-
     return decorator
