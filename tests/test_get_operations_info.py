@@ -16,3 +16,10 @@ def test_get_operations_info_invalid_json():
     filepath = os.path.join("docs", filename)
 
     assert get_operations_info(filepath) == []
+
+
+def test_get_operations_info_empty():
+    filename = 'test_operations_empty.json'
+    filepath = os.path.join('docs', filename)
+
+    assert get_operations_info(filepath) == []
