@@ -9,3 +9,10 @@ def test_get_operations_info_basic(operations_info):
     filepath = os.path.join('docs', filename)
 
     assert get_operations_info(filepath) == operations_info
+
+
+def test_get_operations_info_invalid_json():
+    filename = "test_operations_invalid_encoding.json"
+    filepath = os.path.join("docs", filename)
+
+    assert get_operations_info(filepath) == []
