@@ -1,4 +1,7 @@
+import os
+
 from src.masks import mask_account, mask_card
+from src.utils import get_operations_info
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat, orders_info
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
@@ -210,6 +213,13 @@ def main() -> None:
 
     for card_number in card_number_generator(1, 5):
         print(card_number)
+    current_path = os.getcwd()
+    project_path = os.path.abspath(os.path.join(current_path, '..'))
+    filepath = os.path.join(project_path, 'data', 'operations.json')
+    for dictionary in get_operations_info(filepath):
+        for key, value in dictionary.items():
+            print(f"{key} : {value}")
+        print("#" * 16)
 
 
 if __name__ == "__main__":
