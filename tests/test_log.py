@@ -59,6 +59,6 @@ def test_log_error_file():
         logs = f.read()
 
     # f"{func.__name__} error: {type(e).__name__}. Inputs: {args}, {kwargs} "
-    expected_output = "foo_test error: ZeroDivisionError. Inputs: (1, 0), {}"
+    assert logs == "foo_test error: ZeroDivisionError. Inputs: (1, 0), {}"
 
     os.remove(file_path)

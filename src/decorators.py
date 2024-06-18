@@ -21,7 +21,7 @@ def log(*, filename: str | None = None) -> Callable[[Callable[..., Any]], Callab
                     print(log_message)
                 return result
             except Exception as e:
-                log_message = f"{func.__name__} error: {type(e).__name__}. Inputs: {args}, {kwargs} "
+                log_message = f"{func.__name__} error: {type(e).__name__}. Inputs: {args}, {kwargs}"
                 if filename:
                     with open(filename, 'a') as f:
                         f.write(log_message)
