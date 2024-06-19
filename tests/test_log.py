@@ -8,8 +8,9 @@ def test_log_success_console(capsys):
     def foo(x, y):
         return x + y
 
-    foo(1, 1)
+    result = foo(1, 1)
     captured = capsys.readouterr()
+    assert result == 2
     assert captured.out == "foo ok\n"
 
 

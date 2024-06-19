@@ -222,5 +222,7 @@ def main() -> None:
         print("#" * 16)
 
     print(get_operations_info(r'/tests/docs/test_operations.json'))
+
+
 if __name__ == "__main__":
     main()
