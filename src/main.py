@@ -215,12 +215,12 @@ def main() -> None:
         print(card_number)
     current_path = os.getcwd()
     project_path = os.path.abspath(os.path.join(current_path, '..'))
-    filepath = os.path.join(project_path, 'data', 'operations.json')
+    filepath = os.path.join(project_path, 'data', 'test_operations.json')
     for dictionary in get_operations_info(filepath):
         for key, value in dictionary.items():
             print(f"{key} : {value}")
         print("#" * 16)
 
-
+    print(get_operations_info(r'/tests/docs/test_operations.json'))
 if __name__ == "__main__":
     main()
