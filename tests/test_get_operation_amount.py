@@ -15,11 +15,15 @@ def test_get_operation_amount_rub(operations_info):
 
 
 @patch('requests.get')
-def test_get_operation_amount_eur(mock_get, operations_info, transaction_request_data):
+def test_get_operation_amount_usd(mock_get, operations_info, transaction_request_data):
     operation = operations_info[1]
     mock_get.return_value.json.return_value = transaction_request_data
     assert get_operation_amount(operation) == 724703.41
-    mock_get.assert_called_once()
+    load_dotenv()
+    api_key = os.getenv("EXCHANGE_RATES_API_KEY")
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
+    headers = {"apikey": api_key}
+    mock_get.assert_called_once_with(url, headers)
 
 
 def test_get_operation_amount_bad_response(transaction_request_data):
