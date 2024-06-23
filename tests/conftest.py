@@ -262,3 +262,22 @@ def create_empty_test_file():
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write("")
     return filepath
+
+
+@pytest.fixture
+def transaction_request_data():
+    return {
+        "date": "2018-02-22",
+        "historical": "",
+        "info": {
+            "rate": 148.972231,
+            "timestamp": 1519328414
+        },
+        "query": {
+            "amount": 8221.37,
+            "from": "USD",
+            "to": "RUB"
+        },
+        "result": 724703.41,
+        "success": True
+    }
