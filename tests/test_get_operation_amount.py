@@ -21,9 +21,10 @@ def test_get_operation_amount_usd(mock_get, operations_info, transaction_request
     assert get_operation_amount(operation) == 724703.41
     load_dotenv()
     api_key = os.getenv("EXCHANGE_RATES_API_KEY")
-    url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
+    # f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency}&amount={amount}"
+    url = "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
     headers = {"apikey": api_key}
-    mock_get.assert_called_once_with(url, headers)
+    mock_get.assert_called_once_with(url, headers=headers)
 
 
 def test_get_operation_amount_bad_response(transaction_request_data):
@@ -37,4 +38,4 @@ def test_get_operation_amount_bad_response(transaction_request_data):
         api_key = os.getenv('EXCHANGE_RATES_API_KEY')
         url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
         headers = {"apikey": api_key}
-        mock_get.assert_called_once_with(url, headers)
+        mock_get.assert_called_once_with(url, headers=headers)
