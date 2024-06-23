@@ -17,4 +17,3 @@ def get_operations_info(path: str) -> List[Dict[str, Any]]:
                 return []
     except FileNotFoundError:
         return []
-    return []
