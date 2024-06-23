@@ -5,6 +5,7 @@ from src.utils import get_operations_info
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 from src.processing import filter_by_state, sort_by_date, sort_by_price_in_cat, orders_info
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.external_api import get_operation_amount
 
 
 def main() -> None:
@@ -221,7 +222,12 @@ def main() -> None:
             print(f"{key} : {value}")
         print("#" * 16)
 
-    print(get_operations_info(r'/tests/docs/test_operations.json'))
+    print(get_operations_info(r'D:\Study\IT\SkyPro Homework\Develop\homework_dev\data\operations.json'))
+
+    print("get_operation_amount():")
+    operations = get_operations_info(r'D:\Study\IT\SkyPro Homework\Develop\homework_dev\data\operations.json')[:2]
+    for op in operations:
+        print(get_operation_amount(op))
 
 
 if __name__ == "__main__":
