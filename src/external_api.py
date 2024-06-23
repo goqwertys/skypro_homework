@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 def get_operation_amount(transaction: Dict[str, Any]) -> float | None:
     """Returns the amount of given transaction in rubles. Converts it if currency is in other currency"""
-    amount = float(transaction['operationAmount']['amount'])
+    amount = float(transaction.get('operationAmount').get('amount'))
     currency = transaction.get('operationAmount').get('currency').get('code')
 
     if currency == "RUB":
