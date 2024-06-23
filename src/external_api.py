@@ -7,8 +7,12 @@ from dotenv import load_dotenv
 
 def get_operation_amount(transaction: Dict[str, Any]) -> float | None:
     """Returns the amount of given transaction in rubles. Converts it if currency is in other currency"""
-    amount = float(transaction.get('operationAmount').get('amount'))
-    currency = transaction.get('operationAmount').get('currency').get('code')
+    operation_amount = transaction.get('operationAmount')
+    if not operation_amount or not isinstance(operation_amount, dict):
+        return None
+
+    amount = float(operation_amount.get('amount', 0.0))
+    currency = operation_amount.get('currency', {}).get('code')
 
     if currency == "RUB":
         return amount
@@ -23,7 +27,11 @@ def get_operation_amount(transaction: Dict[str, Any]) -> float | None:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
-        return data.get("result")
+        result = data.get("result")
+        if result is None:
+            return None
+        return float(result)
+
     except requests.RequestException as e:
         print(f"Error fetching exchange rate data: {e}")
         return 0.0  # Return 0.0 in case of any error

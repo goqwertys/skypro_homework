@@ -2,7 +2,7 @@ import json
 from typing import Any, Dict, List, Union
 
 
-def get_operations_info(path: str) -> Union[List[Dict[str, Any]], List[Dict[Any, Any]]]:
+def get_operations_info(path: str) -> List[Dict[str, Any]]:
     """Takes as input a path to a JSON file and returns a list of dictionaries with data about financial transactions"""
     try:
         with open(path, 'r', encoding='utf-8') as f:
@@ -14,3 +14,4 @@ def get_operations_info(path: str) -> Union[List[Dict[str, Any]], List[Dict[Any,
                 return []
     except FileNotFoundError:
         return []
+    return []
