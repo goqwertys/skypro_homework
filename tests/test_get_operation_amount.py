@@ -27,11 +27,11 @@ def test_get_operation_amount_usd(mock_get, operations_info, transaction_request
     mock_get.assert_called_once_with(url, headers=headers)
 
 
-def test_get_operation_amount_bad_response(transaction_request_data):
+def test_get_operation_amount_bad_response(operations_info):
     with patch('requests.get') as mock_get:
         mock_get.side_effect = requests.RequestException("Test exception")
 
-        result = get_operation_amount(transaction_request_data)
+        result = get_operation_amount(operations_info[1])
 
         assert result == 0.0
         load_dotenv()
