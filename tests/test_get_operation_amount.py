@@ -1,11 +1,9 @@
 import os
 
-import pytest
 import requests
 from dotenv import load_dotenv
 
 from src.external_api import get_operation_amount
-from unittest.mock import Mock
 from unittest.mock import patch
 
 
@@ -36,6 +34,6 @@ def test_get_operation_amount_bad_response(operations_info):
         assert result == 0.0
         load_dotenv()
         api_key = os.getenv('EXCHANGE_RATES_API_KEY')
-        url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
+        url = "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
         headers = {"apikey": api_key}
         mock_get.assert_called_once_with(url, headers=headers)
