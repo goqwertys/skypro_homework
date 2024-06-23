@@ -1,4 +1,5 @@
 import os.path
+from unittest.mock import patch
 
 import pytest
 from src.utils import get_operations_info
@@ -27,3 +28,10 @@ def test_get_operations_info_empty(create_empty_test_file):
 
     assert get_operations_info(filepath) == []
     os.remove(filepath)
+
+
+def test_get_operations_info_file_not_found():
+    path = 'fake_path/operations.json'
+    with patch('builtins.open', side_effect=FileNotFoundError):
+        result = get_operations_info(path)
+        assert result == []
