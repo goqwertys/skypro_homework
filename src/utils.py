@@ -7,13 +7,9 @@ def get_operations_info(path: str) -> List[Dict[str, Any]]:
     and returns a list of dictionaries with data about financial transactions"""
     try:
         with open(path, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-                if isinstance(data, list) and all(
-                    isinstance(item, dict) for item in data
-                ):
-                    return data
-            except json.JSONDecodeError:
-                return []
-    except FileNotFoundError:
-        return []
+            data = json.load(f)
+            if isinstance(data, list) and all(isinstance(item, dict) for item in data):
+                return data
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+    return []
