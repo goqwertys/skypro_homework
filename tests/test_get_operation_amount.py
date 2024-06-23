@@ -37,3 +37,40 @@ def test_get_operation_amount_bad_response(operations_info):
         url = "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8221.37"
         headers = {"apikey": api_key}
         mock_get.assert_called_once_with(url, headers=headers)
+
+
+def test_get_operation_amount_no_operation_amount():
+    transaction = {}
+    result = get_operation_amount(transaction)
+    assert result == 0.0
+
+
+def test_get_operation_amount_invalid_operation_amount():
+    transaction = {
+        "operationAmount": "invalid_data"
+    }
+    result = get_operation_amount(transaction)
+    assert result == 0.0
+
+
+def test_get_operation_amount_no_currency_code():
+    transaction = {
+        "operationAmount": {
+            "amount": "100.0",
+            "currency": {}
+        }
+    }
+    result = get_operation_amount(transaction)
+    assert result == 0.0
+
+
+def test_get_operation_amount_no_amount():
+    transaction = {
+        "operationAmount": {
+            "currency": {
+                "code": "USD"
+            }
+        }
+    }
+    result = get_operation_amount(transaction)
+    assert result == 0.0

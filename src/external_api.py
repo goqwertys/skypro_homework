@@ -9,7 +9,7 @@ def get_operation_amount(transaction: Dict[str, Any]) -> float | None:
     """Returns the amount of given transaction in rubles. Converts it if currency is in other currency"""
     operation_amount = transaction.get("operationAmount")
     if not operation_amount or not isinstance(operation_amount, dict):
-        return None
+        return 0.0
 
     amount = float(operation_amount.get("amount", 0.0))
     currency = operation_amount.get("currency", {}).get("code")
@@ -27,7 +27,7 @@ def get_operation_amount(transaction: Dict[str, Any]) -> float | None:
         data = response.json()
         result = data.get("result")
         if result is None:
-            return None
+            return 0.0
         return float(result)
 
     except requests.RequestException as e:
