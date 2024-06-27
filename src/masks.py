@@ -4,8 +4,8 @@ Defining functions for masking data
 import logging
 import os
 
-from paths import get_project_root
-from config import LOG_LEVEL
+from src.paths import get_project_root
+from src.config import LOG_LEVEL
 
 # Logger setup
 logger = logging.getLogger(__name__)
