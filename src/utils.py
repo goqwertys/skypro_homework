@@ -23,10 +23,13 @@ def get_operations_info(path: str) -> List[Dict[str, Any]]:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
             if isinstance(data, list) and all(isinstance(item, dict) for item in data):
-                logger.info(f"Operations has loaded from {path}")
+                logger.info(f"Operations have been successfully loaded from {path}")
                 return data
-            logger.warning(f"")
+            logger.warning(f"The data in {path} is not in the expected format. Expected a list of dictionaries.")
             return []
-    except (FileNotFoundError, json.JSONDecodeError) as ex:
-        logger.error(f"An error has occurred: {ex}")
+    except FileNotFoundError:
+        logger.error(f"File not found: {path}")
+        return []
+    except json.JSONDecodeError:
+        logger.error(f"JSON decode error in file: {path}")
         return []
