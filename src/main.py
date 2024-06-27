@@ -1,6 +1,9 @@
+import logging
 import os
 
+from src.config import LOG_LEVEL
 from src.masks import mask_account, mask_card
+from src.paths import get_project_root
 from src.utils import get_operations_info
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 from src.processing import (
@@ -16,8 +19,18 @@ from src.generators import (
 )
 from src.external_api import get_operation_amount
 
+# Logger setup
+logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)
+log_path = os.path.join(get_project_root(), 'logs', f'{__name__}.log')
+fh = logging.FileHandler(log_path, mode='w')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
 
 def main() -> None:
+    logger.info("Application started...")
     # MASK CARD
     print("Testing mask_card():")
     card_mask = mask_card("7000792289606361")
@@ -238,6 +251,7 @@ def main() -> None:
     )[:2]
     for op in operations:
         print(get_operation_amount(op))
+    logger.info("Application finished")
 
 
 if __name__ == "__main__":
