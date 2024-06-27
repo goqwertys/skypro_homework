@@ -2,22 +2,13 @@ import logging
 import os
 
 from src.config import LOG_LEVEL
+from src.external_api import get_operation_amount
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.masks import mask_account, mask_card
 from src.paths import get_project_root
+from src.processing import filter_by_state, orders_info, sort_by_date, sort_by_price_in_cat
 from src.utils import get_operations_info
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
-from src.processing import (
-    filter_by_state,
-    sort_by_date,
-    sort_by_price_in_cat,
-    orders_info,
-)
-from src.generators import (
-    filter_by_currency,
-    transaction_descriptions,
-    card_number_generator,
-)
-from src.external_api import get_operation_amount
 
 # Logger setup
 logger = logging.getLogger(__name__)
