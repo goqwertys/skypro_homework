@@ -1,6 +1,20 @@
 """
 Defining functions for masking data
 """
+import logging
+import os
+
+from paths import get_project_root
+from config import LOG_LEVEL
+
+# Logger setup
+logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)
+log_path = os.path.join(get_project_root(), 'logs', f'{__name__}.log')
+fh = logging.FileHandler(log_path, mode='w')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 
 def mask_card(card_number: str) -> str:
