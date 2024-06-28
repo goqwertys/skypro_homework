@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable, Tuple, Any, Dict
+from typing import Any, Callable, Dict, Tuple
 
 
 def log(

@@ -1,23 +1,27 @@
+import logging
 import os
 
+from src.config import LOG_LEVEL
+from src.external_api import get_operation_amount
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.masks import mask_account, mask_card
+from src.paths import get_project_root
+from src.processing import filter_by_state, orders_info, sort_by_date, sort_by_price_in_cat
 from src.utils import get_operations_info
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
-from src.processing import (
-    filter_by_state,
-    sort_by_date,
-    sort_by_price_in_cat,
-    orders_info,
-)
-from src.generators import (
-    filter_by_currency,
-    transaction_descriptions,
-    card_number_generator,
-)
-from src.external_api import get_operation_amount
+
+# Logger setup
+logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)
+log_path = os.path.join(get_project_root(), 'logs', f'{__name__}.log')
+fh = logging.FileHandler(log_path, mode='w')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 
 def main() -> None:
+    logger.info("Application started...")
     # MASK CARD
     print("Testing mask_card():")
     card_mask = mask_card("7000792289606361")
@@ -238,6 +242,7 @@ def main() -> None:
     )[:2]
     for op in operations:
         print(get_operation_amount(op))
+    logger.info("Application finished")
 
 
 if __name__ == "__main__":
