@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Hashable, Union
 
 import pandas as pd
 
@@ -18,7 +18,7 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 
-def get_operations_info(path: str) -> List[Dict[str, Any]]:
+def get_operations_info(path: str) -> Union[List[Dict[Hashable, Any]], List[Any]]:
     """Takes as input a path to a JSON, CSV, or XLSX file
     and returns a list of dictionaries with data about financial transactions"""
     extension = path.split('.')[-1].lower()
@@ -32,7 +32,7 @@ def get_operations_info(path: str) -> List[Dict[str, Any]]:
                 return data
             logger.warning(f"The data in {path} is not in the expected format. Expected a list of dictionaries.")
             return []
-        elif extension == 'scv':
+        elif extension == 'csv':
             data = pd.read_csv(path)
             result = data.to_dict(orient='records')
             logger.info(f"Operations have been successfully loaded from {path}")
@@ -44,6 +44,7 @@ def get_operations_info(path: str) -> List[Dict[str, Any]]:
             return result
         else:
             logger.warning(f'{extension} file is not supported. An empty list will be returned.')
+            return []
     except FileNotFoundError:
         logger.error(f"File not found: {path}")
         return []
