@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+from collections import Counter
 from typing import Any, Dict, List, Union
 
 import pandas as pd
@@ -66,3 +67,12 @@ def find_operations(operations: list[dict], query: str) -> list[dict]:
     """
     pattern = re.compile(re.escape(query), re.IGNORECASE)
     return [op for op in operations if op.get('description') and pattern.search(op['description'])]
+
+
+def get_operation_counts(operations: list[dict]) -> dict:
+    """
+    Returns a dictionary where the keys are the category names and the values are the number of transactions in each
+    category
+    """
+    counted = Counter(op.get('description') for op in operations if op.get('description'))
+    return dict(counted)
