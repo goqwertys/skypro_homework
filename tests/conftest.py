@@ -1,7 +1,9 @@
 import json
 import os
 
+import pandas as pd
 import pytest
+from tempfile import NamedTemporaryFile
 
 
 @pytest.fixture
@@ -281,3 +283,67 @@ def transaction_request_data():
         "result": 724703.41,
         "success": True
     }
+
+@pytest.fixture
+def json_file():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount": {
+                "amount": "31957.58",
+                "currency": {
+                    "name": "руб.",
+                    "code": "RUB"
+                }
+            },
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        }
+    ]
+    with NamedTemporaryFile(delete=False, suffix='.json') as f:
+        json.dump(data, f)
+        return f.name
+
+
+@pytest.fixture
+def csv_file():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": "31957.58",
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        }
+    ]
+    df = pd.DataFrame(data)
+    with NamedTemporaryFile(delete=False, suffix='.csv', mode='w', newline='') as f:
+        df.to_csv(f, sep=';', index=False)
+        return f.name
+
+
+def xlsx_file():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": "31957.58",
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        }
+    ]
+    df = pd.DataFrame(data)
+    with NamedTemporaryFile(delete=False, suffix='.xlsx') as f:
+        df.to_excel(f, index=False)
+        return f.name
