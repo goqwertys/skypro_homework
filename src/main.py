@@ -7,7 +7,7 @@ from src.generators import card_number_generator, filter_by_currency, transactio
 from src.masks import mask_account, mask_card
 from src.paths import get_project_root
 from src.processing import filter_by_state, orders_info, sort_by_date, sort_by_price_in_cat
-from src.utils import get_operations_info
+from src.utils import get_operations_info, find_operations
 from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
 
 # Logger setup
@@ -299,26 +299,128 @@ logger.addHandler(fh)
 #         'description': 'Открытие вклада'
 #     }]
 
+def greetings():
+    message = "Программа: Привет! Добро пожаловать в программу работы с банковскими транзакциями."
+    print(message)
 
-def main():
-    logger.info("Application started...")
-    # GREETINGS
-    greetings = """Программа: Привет! Добро пожаловать в программу работы 
-с банковскими транзакциями. 
-Выберите необходимый пункт меню:
+
+def input_format():
+    message = """Выберите необходимый пункт меню:
 1. Получить информацию о транзакциях из JSON-файла
 2. Получить информацию о транзакциях из CSV-файла
 3. Получить информацию о транзакциях из XLSX-файла\n"""
-    print(greetings)
-    choice = input("Пользователь: ")
+    print(message)
+    choice = int(input("Пользователь: "))
     if choice == 1:
-        pass
-    elif choice == 2:
-        pass
-    elif choice == 3:
-        pass
+        return os.path.join(get_project_root(), "data", "operations.json")
+    if choice == 2:
+        return os.path.join(get_project_root(), "data", "transactions.csv")
+    if choice == 3:
+        return os.path.join(get_project_root(), "data", "transactions_excel.xlsx")
+    return None
+
+
+def get_status():
+    message = """Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
+Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"""
+    print(message)
+    while True:
+        status = input("Пользователь: ")
+        if status not in ("EXECUTED", "CANCELED", "PENDING"):
+            print(f'Статус операции "{status}" недоступен.')
+            print(message)
+            continue
+        else:
+            return status
+
+
+def get_options():
+    print("Программа: Отсортировать по датам? Да/нет\n")
+    user_input = input("Пользователь: ")
+    if user_input == 'Да':
+        is_sort_by_date = True
+        print("Программа: Отсортировать по возрастанию или по убыванию?\n")
+        user_input = input("Пользователь: ")
+        if user_input.lower() == 'по убыванию':
+            rev = True
+        else:
+            rev = False
     else:
-        pass
+        is_sort_by_date = False
+        rev = None
+
+    print("Программа: Выводить только рублевые тразакции? Да/Нет\n")
+    user_input = input("Пользователь: ")
+    if user_input.lower() == "да":
+        is_rub_only = True
+    else:
+        is_rub_only = False
+
+    print("Программа: Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n")
+    user_input = input("Пользователь: ")
+    if user_input.lower() == "да":
+        print("Программа: Введите слово")
+        word = input("Пользователь:")
+    else:
+        word = None
+    return is_sort_by_date, rev, is_rub_only, word
+
+
+def print_element(el: dict):
+    logger.info(f""" Printing {el}""")
+    print(f"{el.get("date")} {el.get("description")}")
+    if el.get("from"):
+        print(f"{mask_card_or_acc_string(el.get("from"))} -> {mask_card_or_acc_string(el.get("to"))}")
+    else:
+        print(mask_card_or_acc_string(el.get("to")))
+    print(f"Сумма: {round(get_operation_amount(el), 2)}")
+    print()
+
+
+def main():
+    logger.info("Application started...")
+    greetings()
+
+    filepath = input_format()
+    logger.info(f"Opening file from: {filepath}")
+    status = get_status()
+    logger.info(f"User input: status: {status}")
+    transactions = get_operations_info(filepath)
+    logger.info(f"Operations loaded. contains {len(transactions)}")
+    data = filter_by_state(transactions, status)
+    logger.info(f"Operations filtered by state {status}, now contains {len(data)} elements")
+
+    # getting parameters
+    is_sort_by_day, srt_reverse, only_rub, word = get_options()
+    logger.info(f"Parameters: {is_sort_by_day}, {srt_reverse}, {only_rub}, {word}")
+
+    # processing data
+    if is_sort_by_day:
+        data = sort_by_date(data, rev=srt_reverse)
+        logger.info(f"data has been sorted by date, now contains {len(data)} elements")
+
+    # print("TESTING...")
+    # for i in data:
+    #     print_element(i)
+
+    if word:
+        data = find_operations(data, word)
+        logger.info(f"data filtered by word:{word}, now contains {len(data)} elements")
+
+    # print("TESTING...")
+    # for i in data:
+    #     print_element(i)
+
+    if only_rub:
+        gen_transactions = filter_by_currency(data, "RUB")
+        logger.info(f"data filtered by currency:'RUB', now contains {len(list(gen_transactions))} elements")
+    else:
+        gen_transactions = (tr for tr in data)
+
+    # printing...
+    logger.info(f"Printing...")
+    for tr in gen_transactions:
+        print_element(tr)
     logger.info("Application finished")
 
 
