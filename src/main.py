@@ -3,12 +3,11 @@ import os
 
 from src.config import LOG_LEVEL
 from src.external_api import get_operation_amount
-from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
-from src.masks import mask_account, mask_card
+from src.generators import filter_by_currency
 from src.paths import get_project_root
-from src.processing import filter_by_state, orders_info, sort_by_date, sort_by_price_in_cat
-from src.utils import get_operations_info, find_operations
-from src.widget import convert_iso_ddmmyyy, mask_card_or_acc_string
+from src.processing import filter_by_state, sort_by_date
+from src.utils import find_operations, get_operations_info
+from src.widget import mask_card_or_acc_string
 
 # Logger setup
 logger = logging.getLogger(__name__)
@@ -299,12 +298,12 @@ logger.addHandler(fh)
 #         'description': 'Открытие вклада'
 #     }]
 
-def greetings():
+def greetings() -> None:
     message = "Программа: Привет! Добро пожаловать в программу работы с банковскими транзакциями."
     print(message)
 
 
-def input_format():
+def input_format() -> str | None:
     message = """Выберите необходимый пункт меню:
 1. Получить информацию о транзакциях из JSON-файла
 2. Получить информацию о транзакциях из CSV-файла
@@ -320,8 +319,8 @@ def input_format():
     return None
 
 
-def get_status():
-    message = """Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
+def get_status() -> str:
+    message = """Программа: Введите статус, по которому необходимо выполнить фильтрацию.
 Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"""
     print(message)
     while True:
@@ -334,7 +333,7 @@ def get_status():
             return status.upper()
 
 
-def get_options():
+def get_options() -> tuple:
     print("Программа: Отсортировать по датам? Да/нет\n")
     user_input = input("Пользователь: ")
     if user_input == 'Да':
@@ -366,33 +365,63 @@ def get_options():
     return is_sort_by_date, rev, is_rub_only, word
 
 
-def print_element(el: dict):
+def print_element(el: dict) -> None:
     logger.info(f""" Printing {el}""")
-    print(f"{el.get("date")} {el.get("description")}")
-    if el.get("from") and isinstance(el.get("from"), str):
-        print(f"{mask_card_or_acc_string(el.get("from"))} -> {mask_card_or_acc_string(el.get("to"))}")
+
+    date = el.get("date", "")
+    description = el.get("description", "")
+    print(f"{date} {description}")
+
+    from_account = el.get("from")
+    to_account = el.get("to")
+
+    if from_account and isinstance(from_account, str) and to_account and isinstance(to_account, str):
+        print(f"{mask_card_or_acc_string(from_account)} -> {mask_card_or_acc_string(to_account)}")
+    elif to_account and isinstance(to_account, str):
+        print(mask_card_or_acc_string(to_account))
     else:
-        print(mask_card_or_acc_string(el.get("to")))
-    print(f"Сумма: {round(get_operation_amount(el), 2)}")
+        print("Account information missing")
+
+    amount = get_operation_amount(el)
+    if amount is not None:
+        print(f"Сумма: {round(amount, 2)}")
+    else:
+        print("Amount information missing")
+
     print()
 
 
-def main():
+def main() -> None:
     logger.info("Application started...")
     greetings()
 
     filepath = input_format()
+    if filepath is None:
+        logger.error("No valid file format selected.")
+        return
+
     logger.info(f"Opening file from: {filepath}")
+
     status = get_status()
     logger.info(f"User input: status: {status}")
     transactions = get_operations_info(filepath)
+
+    if not transactions:
+        logger.error("No transactions found.")
+        return
+
     logger.info(f"Operations loaded. contains {len(transactions)}")
+
     data = filter_by_state(transactions, status)
+    if not data:
+        logger.warning("No transactions match the given status.")
+        return
+
     logger.info(f"Operations filtered by state {status}, now contains {len(data)} elements")
 
     # getting parameters
     is_sort_by_day, srt_reverse, only_rub, word = get_options()
-    logger.info(f"Parameters: Sort by day:{is_sort_by_day}, reverse:{srt_reverse}, Only RUB: {only_rub}, Search: {word}")
+    logger.info(f"Options: Sort by day:{is_sort_by_day}, rev:{srt_reverse}, Only RUB: {only_rub}, Search for: {word}")
 
     # processing data
     if is_sort_by_day:
@@ -416,7 +445,7 @@ def main():
         logger.info(f"data filtered by currency:'RUB', now contains {len(list(data))} elements")
 
     # printing...
-    logger.info(f"Printing...")
+    logger.info("Printing...")
     print()
     for tr in data:
         print_element(tr)
