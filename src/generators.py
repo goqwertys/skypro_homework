@@ -3,10 +3,12 @@ from typing import Generator, Iterator, List
 
 def filter_by_currency(transactions: List[dict], currency: str) -> Iterator:
     """Returns an iterator that yields, one by one, the transactions that specify the given currency"""
+    if transactions[0].get("operationAmount"):
+        return (tr for tr in transactions if tr["operationAmount"]["currency"]["code"] == currency)
     return (
         tr
         for tr in transactions
-        if tr["operationAmount"]["currency"]["code"] == currency
+        if tr["currency_code"] == currency
     )
 
 

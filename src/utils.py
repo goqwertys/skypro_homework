@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+import re
+from collections import Counter
 from typing import Any, Dict, List, Union
 
 import pandas as pd
@@ -57,3 +59,25 @@ def get_operations_info(path: str) -> Union[List[Dict[str, Any]], List[Any]]:
     except Exception as ex:
         logger.error(f"An error has occurred: {ex}")
         return []
+
+
+def find_operations(operations: list[dict], query: str) -> list[dict]:
+    """
+    Returns a list of dictionaries that have the given string in tier description
+    """
+    pattern = re.compile(re.escape(query), re.IGNORECASE)
+    return [op for op in operations if op.get('description') and pattern.search(op['description'])]
+
+
+def get_operation_counts(operations: list[dict], categories: list[str]) -> dict:
+    """
+    Returns a dictionary where the keys are the category names and the values are the number of transactions in each
+    category
+    """
+    # counted = Counter(op.get('description') for op in operations if op.get('description'))
+    # return dict(counted)
+    counted = Counter(op.get("description") for op in operations if op.get("description") in categories)
+
+    result = {category: counted.get(category, 0) for category in categories}
+
+    return result

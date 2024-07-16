@@ -1,7 +1,9 @@
 import json
-import os
+# import os
 
+import pandas as pd
 import pytest
+from tempfile import NamedTemporaryFile
 
 
 @pytest.fixture
@@ -229,39 +231,115 @@ def operations_info():
 
 
 @pytest.fixture
-def create_test_file_success(operations_info):
-    filename = "test_operations.json"
-    filepath = os.path.join('docs', filename)
-
-    # Создаем тестовый файл с операциями
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(operations_info, f, ensure_ascii=False, indent=4)
-    return filepath
+def create_test_file_json(operations_info):
+    with NamedTemporaryFile(delete=False, suffix='.json', mode='w', encoding='utf-8') as f:
+        json.dump(operations_info, f)
+        return f.name
 
 
 @pytest.fixture
 def create_invalid_test_file():
-    filename = "invalid_test_operations.json"
-    filepath = os.path.join('docs', filename)
-
-    # Create invalid json file
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write("{invalid_json: True,}")  # invalidJSON
-
-    return filepath
+    with NamedTemporaryFile(delete=False, suffix='.json') as f:
+        f.write(b'invalid json')
+        return f.name
 
 
 @pytest.fixture
 def create_empty_test_file():
-    filename = "empty_test_operations.json"
-    filepath = os.path.join('docs', filename)
+    with NamedTemporaryFile(delete=False, suffix='.json') as f:
+        return f.name
 
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write("")
-    return filepath
+
+@pytest.fixture
+def create_test_file_csv():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": "31957.58",
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        },
+        {
+            "id": 41428829,
+            "state": "EXECUTED",
+            "date": "2019-07-03T18:35:29.512364",
+            "operationAmount.amount": "8221.37",
+            "operationAmount.currency.name": "USD",
+            "operationAmount.currency.code": "USD",
+            "description": "Перевод организации",
+            "from": "MasterCard 7158300734726758",
+            "to": "Счет 35383033474447895560"
+        }
+    ]
+    df = pd.DataFrame(data)
+    with NamedTemporaryFile(delete=False, suffix='.csv', mode='w', newline='') as f:
+        df.to_csv(f, sep=';', index=False)
+        return f.name
+
+
+@pytest.fixture
+def create_test_file_xlsx():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": 31957.58,
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        },
+        {
+            "id": 41428829,
+            "state": "EXECUTED",
+            "date": "2019-07-03T18:35:29.512364",
+            "operationAmount.amount": 8221.37,
+            "operationAmount.currency.name": "USD",
+            "operationAmount.currency.code": "USD",
+            "description": "Перевод организации",
+            "from": "MasterCard 7158300734726758",
+            "to": "Счет 35383033474447895560"
+        }
+    ]
+    df = pd.DataFrame(data)
+    with NamedTemporaryFile(delete=False, suffix='.xlsx') as f:
+        df.to_excel(f, index=False)
+        return f.name
+
+
+@pytest.fixture
+def data_table():
+    return [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": 31957.58,
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        },
+        {
+            "id": 41428829,
+            "state": "EXECUTED",
+            "date": "2019-07-03T18:35:29.512364",
+            "operationAmount.amount": 8221.37,
+            "operationAmount.currency.name": "USD",
+            "operationAmount.currency.code": "USD",
+            "description": "Перевод организации",
+            "from": "MasterCard 7158300734726758",
+            "to": "Счет 35383033474447895560"
+        }
+    ]
 
 
 @pytest.fixture
@@ -280,4 +358,82 @@ def transaction_request_data():
         },
         "result": 724703.41,
         "success": True
+    }
+
+
+@pytest.fixture
+def json_file():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount": {
+                "amount": "31957.58",
+                "currency": {
+                    "name": "руб.",
+                    "code": "RUB"
+                }
+            },
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        }
+    ]
+    with NamedTemporaryFile(delete=False, suffix='.json') as f:
+        json.dump(data, f)
+        return f.name
+
+
+@pytest.fixture
+def csv_file():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": "31957.58",
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        }
+    ]
+    df = pd.DataFrame(data)
+    with NamedTemporaryFile(delete=False, suffix='.csv', mode='w', newline='') as f:
+        df.to_csv(f, sep=';', index=False)
+        return f.name
+
+
+def xlsx_file():
+    data = [
+        {
+            "id": 441945886,
+            "state": "EXECUTED",
+            "date": "2019-08-26T10:50:58.294041",
+            "operationAmount.amount": "31957.58",
+            "operationAmount.currency.name": "руб.",
+            "operationAmount.currency.code": "RUB",
+            "description": "Перевод организации",
+            "from": "Maestro 1596837868705199",
+            "to": "Счет 64686473678894779589"
+        }
+    ]
+    df = pd.DataFrame(data)
+    with NamedTemporaryFile(delete=False, suffix='.xlsx') as f:
+        df.to_excel(f, index=False)
+        return f.name
+
+
+@pytest.fixture
+def operations_categories():
+    return ["Перевод организации", "Снятие наличных"]
+
+
+@pytest.fixture
+def operation_counts():
+    return {
+        "Перевод организации": 2,
+        "Снятие наличных": 0
     }

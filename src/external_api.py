@@ -8,11 +8,12 @@ from dotenv import load_dotenv
 def get_operation_amount(transaction: Dict[str, Any]) -> float | None:
     """Returns the amount of given transaction in rubles. Converts it if currency is in other currency"""
     operation_amount = transaction.get("operationAmount")
-    if not operation_amount or not isinstance(operation_amount, dict):
-        return 0.0
-
-    amount = float(operation_amount.get("amount", 0.0))
-    currency = operation_amount.get("currency", {}).get("code")
+    if operation_amount:
+        amount = float(operation_amount.get("amount", 0.0))
+        currency = operation_amount.get("currency", {}).get("code")
+    else:
+        amount = float(transaction.get("amount", 0.0))
+        currency = transaction.get("currency_code")
 
     if currency == "RUB":
         return amount
