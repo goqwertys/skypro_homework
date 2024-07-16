@@ -69,10 +69,18 @@ def find_operations(operations: list[dict], query: str) -> list[dict]:
     return [op for op in operations if op.get('description') and pattern.search(op['description'])]
 
 
-def get_operation_counts(operations: list[dict]) -> dict:
+def get_operation_counts(operations: list[dict], categories: list[str]) -> dict:
     """
     Returns a dictionary where the keys are the category names and the values are the number of transactions in each
     category
     """
-    counted = Counter(op.get('description') for op in operations if op.get('description'))
+    # counted = Counter(op.get('description') for op in operations if op.get('description'))
+    # return dict(counted)
+    counted = Counter()
+
+    for op in operations:
+        description = op.get("description")
+        if description and description in categories:
+            counted[description] += 1
+
     return dict(counted)
