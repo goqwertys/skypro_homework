@@ -424,3 +424,16 @@ def xlsx_file():
     with NamedTemporaryFile(delete=False, suffix='.xlsx') as f:
         df.to_excel(f, index=False)
         return f.name
+
+
+@pytest.fixture
+def operations_categories():
+    return ["Перевод организации", "Снятие наличных"]
+
+
+@pytest.fixture
+def operation_counts():
+    return {
+        "Перевод организации": 2,
+        "Снятие наличных": 0
+    }
