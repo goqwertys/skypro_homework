@@ -76,11 +76,8 @@ def get_operation_counts(operations: list[dict], categories: list[str]) -> dict:
     """
     # counted = Counter(op.get('description') for op in operations if op.get('description'))
     # return dict(counted)
-    counted = Counter()
+    counted = Counter(op.get("description") for op in operations if op.get("description") in categories)
 
-    for op in operations:
-        description = op.get("description")
-        if description and description in categories:
-            counted[description] += 1
+    result = {category: counted.get(category, 0) for category in categories}
 
-    return dict(counted)
+    return result
