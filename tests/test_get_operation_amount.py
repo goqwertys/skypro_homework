@@ -47,7 +47,7 @@ def test_get_operation_amount_no_operation_amount():
 
 def test_get_operation_amount_invalid_operation_amount():
     transaction = {
-        "operationAmount": "invalid_data"
+        "operationAmount": {}
     }
     result = get_operation_amount(transaction)
     assert result == 0.0

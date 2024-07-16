@@ -326,12 +326,12 @@ def get_status():
     print(message)
     while True:
         status = input("Пользователь: ")
-        if status not in ("EXECUTED", "CANCELED", "PENDING"):
+        if status.upper() not in ("EXECUTED", "CANCELED", "PENDING"):
             print(f'Статус операции "{status}" недоступен.')
             print(message)
             continue
         else:
-            return status
+            return status.upper()
 
 
 def get_options():
@@ -359,7 +359,7 @@ def get_options():
     print("Программа: Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n")
     user_input = input("Пользователь: ")
     if user_input.lower() == "да":
-        print("Программа: Введите слово")
+        print("Программа: Введите слово\n")
         word = input("Пользователь:")
     else:
         word = None
@@ -369,7 +369,7 @@ def get_options():
 def print_element(el: dict):
     logger.info(f""" Printing {el}""")
     print(f"{el.get("date")} {el.get("description")}")
-    if el.get("from"):
+    if el.get("from") and isinstance(el.get("from"), str):
         print(f"{mask_card_or_acc_string(el.get("from"))} -> {mask_card_or_acc_string(el.get("to"))}")
     else:
         print(mask_card_or_acc_string(el.get("to")))
@@ -392,7 +392,7 @@ def main():
 
     # getting parameters
     is_sort_by_day, srt_reverse, only_rub, word = get_options()
-    logger.info(f"Parameters: {is_sort_by_day}, {srt_reverse}, {only_rub}, {word}")
+    logger.info(f"Parameters: Sort by day:{is_sort_by_day}, reverse:{srt_reverse}, Only RUB: {only_rub}, Search: {word}")
 
     # processing data
     if is_sort_by_day:
@@ -412,14 +412,13 @@ def main():
     #     print_element(i)
 
     if only_rub:
-        gen_transactions = filter_by_currency(data, "RUB")
-        logger.info(f"data filtered by currency:'RUB', now contains {len(list(gen_transactions))} elements")
-    else:
-        gen_transactions = (tr for tr in data)
+        data = list(filter_by_currency(data, "RUB"))
+        logger.info(f"data filtered by currency:'RUB', now contains {len(list(data))} elements")
 
     # printing...
     logger.info(f"Printing...")
-    for tr in gen_transactions:
+    print()
+    for tr in data:
         print_element(tr)
     logger.info("Application finished")
 
